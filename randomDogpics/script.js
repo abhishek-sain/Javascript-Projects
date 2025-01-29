@@ -1,33 +1,72 @@
-const fetchDogBtn = document.getElementById("fetchDogBtn");
-const dogImage = document.getElementById("dogImage");
+// //-------------------------------------------------------------------------------------------
+// //  Random Dog pic generator with promises
+// //-------------------------------------------------------------------------------------------
 
-function fetchRandomDog() {
+const errmessage = document.getElementById("errmessage");
+const container = document.querySelector(".container");
+const btn = document.getElementById("btn");
+const URL = "https://dog.ceo/api/breeds/image/random";
+
+function getDogpic(num) {
   return new Promise((resolve, reject) => {
-    fetch("https://dog.ceo/api/breeds/image/random")
+    const response = fetch(URL + "/" + num);
+    response
       .then((response) => {
-        console.log("Response received:", response);
-        if (!response.ok) {
-          reject("Failed to fetch the dog image. Status: " + response.status);
-        }
-        return response.json();
+        const data = response.json();
+        return data;
       })
       .then((data) => {
         resolve(data);
       })
-      .catch((error) => {
-        reject(error);
+      .catch(() => {
+        reject("Failed to fetch Images");
       });
   });
 }
 
-fetchDogBtn.addEventListener("click", () => {
-  console.log("Fetching a random dog picture...");
-  fetchRandomDog()
+btn.addEventListener("click", () => {
+  getDogpic(10)
     .then((data) => {
-      console.log("Data fetched from API:", data);
-      dogImage.src = data.message;
+        data.message.forEach((url) => {
+          const newImage = document.createElement("img");
+          newImage.setAttribute("src", url);
+          container.appendChild(newImage);
+        })
     })
     .catch((error) => {
-      console.error("Error fetching the dog image:", error);
+      errmessage.textContent = error;
     });
 });
+
+// //--------------------------------------------------------------------------------------------
+// //  Random Dig Pic Generator using async and await
+// //---------------------------------------------------------------------------------------------
+
+
+// // const errmessage = document.getElementById("errmessage");
+// // const container = document.querySelector(".container");
+// // const btn = document.getElementById("btn");
+// // const URL = "https://dog.ceo/bapi/breeds/image/random";
+
+// // async function getDogpic(num) {
+// //   try {
+// //     const response = await fetch(`${URL}/${num}`);
+// //     const data = await response.json();
+// //     return data;
+// //   } catch (error) {
+// //     throw new Error("failed to fetch data");
+// //   }
+// // }
+
+// // btn.addEventListener("click", async () => {
+// //   try {
+// //     const data = await getDogpic(10);
+// //     data.message.forEach((imgurl) => {
+// //       const newImg = document.createElement("img");
+// //       newImg.setAttribute("src", imgurl);
+// //       container.appendChild(newImg);
+// //     });
+// //   } catch (error) {
+// //     errmessage.textContent = error;
+// //   }
+// // });
