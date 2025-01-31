@@ -23,9 +23,8 @@ restartBtn.addEventListener("click", () => {
 
 function checkWinner() {
   const board = [...buttons].map((btn) => btn.textContent);
-  console.log(board)
+  console.log(board);
 
-  
   let winnerFound = false;
 
   for (let pattern of winners) {
@@ -34,6 +33,9 @@ function checkWinner() {
       console.log(`Winner: ${board[a]}`);
       winuser.textContent = `Winner : ${board[a]}`;
       winnerFound = true;
+      buttons.forEach((btn) => {
+        btn.setAttribute("disabled", true);
+      });
       return;
     }
   }
