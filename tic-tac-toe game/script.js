@@ -16,6 +16,7 @@ const winners = [
 restartBtn.addEventListener("click", () => {
   buttons.forEach((btn) => {
     btn.textContent = "";
+    winuser.textContent = '';
     btn.removeAttribute("disabled");
   });
   turnO = true;
