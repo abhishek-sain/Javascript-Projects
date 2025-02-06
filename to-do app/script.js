@@ -1,51 +1,44 @@
-// const input = document.getElementById("input");
-// const addBtn = document.getElementById("addBtn");
-// const itemList = document.getElementById("Item-list");
-
-// function addItem(inputValue) {
-//   const li = document.createElement("li");
-//   const deleteBtn = document.createElement("button");
-//   li.textContent = inputValue;
-//   deleteBtn.textContent = "Delete";
-//   li.appendChild(deleteBtn);
-//   itemList.appendChild(li);
-
-//   deleteBtn.addEventListener("click", () => {
-//     itemList.removeChild(li);
-//   });
-// }
-
-// addBtn.addEventListener("click", () => {
-//   const inputValue = input.value.trim();
-//   if (inputValue == "") {
-//     alert("Please Enter Your Work");
-//   }
-//   addItem(inputValue);
-//   input.value = "";
-// });
-
 const input = document.getElementById("input");
 const addBtn = document.getElementById("addBtn");
 const itemList = document.getElementById("Item-list");
 
-function addItem(inputValue) {
-  const li = document.createElement("li");
-  const deleteBtn = document.createElement("button");
-  li.textContent = inputValue;
-  deleteBtn.textContent = "Delete";
-  li.appendChild(deleteBtn);
-  itemList.appendChild(li);
+let saveTodo = JSON.parse(localStorage.getItem("ToDos")) || [];
 
-  deleteBtn.addEventListener("click", () => {
-    itemList.removeChild(li);
-  });
+function addItem(inputValue) {
+  saveTodo.push(inputValue);
+  localStorage.setItem("ToDos", JSON.stringify(saveTodo));
+  display();
 }
 
 addBtn.addEventListener("click", () => {
   const inputValue = input.value.trim();
-  if (inputValue == "") {
+  if (inputValue === "") {
     alert("Enter your work");
+    return;
   }
   addItem(inputValue);
   input.value = "";
 });
+
+function display() {
+  itemList.innerHTML = "";
+
+  saveTodo.forEach((item, index) => {
+    const li = document.createElement("li");
+    const deleteBtn = document.createElement("button");
+
+    li.textContent = item;
+    deleteBtn.textContent = "Delete";
+
+    deleteBtn.addEventListener("click", () => {
+      saveTodo.splice(index, 1);
+      localStorage.setItem("ToDos", JSON.stringify(saveTodo));
+      display();
+    });
+
+    li.appendChild(deleteBtn);
+    itemList.appendChild(li);
+  });
+}
+
+display();

@@ -14,6 +14,10 @@ function calculateAge(birthDate) {
     age--;
     return age;
   }
+  if (age<0) {
+    alert('you entered future date')
+    return
+  }
   return age;
 }
 
